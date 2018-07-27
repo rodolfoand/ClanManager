@@ -1,4 +1,4 @@
-package com.example.rodolfoand.clanmanager;
+package com.example.rodolfoand.clanmanager.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.rodolfoand.clanmanager.R;
 
 public class ClansListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
