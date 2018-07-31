@@ -3,6 +3,8 @@ package com.example.rodolfoand.clanmanager.activities;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,11 +14,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.rodolfoand.clanmanager.R;
+import com.example.rodolfoand.clanmanager.adapters.ClanAdapter;
+import com.example.rodolfoand.clanmanager.dao.ClanDao;
+import com.example.rodolfoand.clanmanager.models.Clan;
+
+import java.util.List;
 
 public class ClansListActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener
+        , AdapterView.OnClickListener {
+
+    private Clan clan;
+    private ClanDao clanDao = ClanDao.instance;
+
+    private RecyclerView rvListClan;
+    private ClanAdapter clanAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +59,25 @@ public class ClansListActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        clan = clanDao.getClan("8g90080j");
+        String mensagem;
+        if (clan != null){
+            mensagem = clan.getName();
+        } else {
+            mensagem = "Não encontrou";
+        }
+        Toast.makeText(this, mensagem, Toast.LENGTH_LONG).show();
+
+        rvListClan = findViewById(R.id.rvListClan);
+
+        List<Clan> listClan = clanDao.getList();
+        clanAdapter = new ClanAdapter(listClan, this);
+        rvListClan.setAdapter(clanAdapter);
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        rvListClan.setLayoutManager(staggeredGridLayoutManager);
+
     }
 
     @Override
@@ -99,5 +135,10 @@ public class ClansListActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }
